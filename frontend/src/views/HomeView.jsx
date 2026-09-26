@@ -113,14 +113,9 @@ export default function HomeView({ t, lang }) {
               <div className="lbl">livestock conditions detected</div>
             </div>
 
-            {/* ============================================
-             *  ANIMATED COW ILLUSTRATION
-             * ============================================ */}
             <svg viewBox="0 0 400 460" xmlns="http://www.w3.org/2000/svg">
-              {/* Ground shadow */}
               <ellipse cx="200" cy="432" rx="150" ry="14" fill="#142a1e" opacity="0.6" />
 
-              {/* Grass tufts */}
               <g className="cow-grass">
                 <path d="M60 425 q4 -18 8 0" stroke="#4E7A57" strokeWidth="3" fill="none" strokeLinecap="round" />
                 <path d="M75 428 q5 -22 10 0" stroke="#547C5A" strokeWidth="3" fill="none" strokeLinecap="round" />
@@ -128,13 +123,10 @@ export default function HomeView({ t, lang }) {
                 <path d="M338 425 q4 -16 8 0" stroke="#547C5A" strokeWidth="3" fill="none" strokeLinecap="round" />
               </g>
 
-              {/* Cow (animated) */}
               <g className="cow-group">
-                {/* Back legs */}
                 <rect x="245" y="360" width="18" height="68" rx="6" fill="#6E4630" />
                 <rect x="270" y="360" width="18" height="68" rx="6" fill="#8B5A3C" />
 
-                {/* Tail */}
                 <g className="cow-tail" style={{ transformOrigin: '305px 250px' }}>
                   <path
                     d="M305 250 Q330 280 335 320 Q338 345 330 360"
@@ -146,7 +138,6 @@ export default function HomeView({ t, lang }) {
                   <ellipse cx="330" cy="366" rx="10" ry="12" fill="#4A3526" />
                 </g>
 
-                {/* Body */}
                 <path
                   d="M110 240
                      Q105 210 140 200
@@ -160,41 +151,32 @@ export default function HomeView({ t, lang }) {
                   fill="#C9A685"
                 />
 
-                {/* Body spots */}
                 <ellipse cx="180" cy="255" rx="24" ry="18" fill="#8B5A3C" opacity="0.55" />
                 <ellipse cx="255" cy="300" rx="20" ry="15" fill="#6E4630" opacity="0.45" />
                 <ellipse cx="150" cy="320" rx="16" ry="12" fill="#8B5A3C" opacity="0.4" />
 
-                {/* Front legs */}
                 <rect x="130" y="360" width="18" height="68" rx="6" fill="#8B5A3C" />
                 <rect x="155" y="360" width="18" height="68" rx="6" fill="#C9A685" />
 
-                {/* Neck */}
                 <path
                   d="M115 210 L80 190 L70 235 L110 250 Z"
                   fill="#C9A685"
                 />
 
-                {/* Head */}
                 <g>
-                  {/* Ear */}
                   <g className="cow-ear" style={{ transformOrigin: '95px 175px' }}>
                     <ellipse cx="92" cy="172" rx="14" ry="8" fill="#A97553" transform="rotate(-30 92 172)" />
                   </g>
 
-                  {/* Horn */}
                   <path d="M82 160 Q76 140 88 132" stroke="#EFE7D6" strokeWidth="4" fill="none" strokeLinecap="round" />
                   <path d="M105 155 Q112 138 122 138" stroke="#EFE7D6" strokeWidth="4" fill="none" strokeLinecap="round" />
 
-                  {/* Head shape */}
                   <ellipse cx="95" cy="190" rx="38" ry="34" fill="#C9A685" />
 
-                  {/* Snout / muzzle */}
                   <ellipse cx="70" cy="205" rx="22" ry="16" fill="#E8D4BE" />
                   <ellipse cx="60" cy="200" rx="3" ry="4" fill="#4A3526" />
                   <ellipse cx="62" cy="212" rx="3" ry="4" fill="#4A3526" />
 
-                  {/* Eye */}
                   <g className="cow-eye">
                     <circle cx="108" cy="185" r="4.5" fill="#1E3B2C" />
                     <circle cx="109.5" cy="184" r="1.5" fill="#F7F2E7" />
@@ -216,9 +198,6 @@ export default function HomeView({ t, lang }) {
           </div>
         </div>
 
-        {/* ============================================================
-         *  FLOATING DEMO VIDEO CARD
-         * ============================================================ */}
         <button
           type="button"
           onClick={() => setVideoOpen(true)}
@@ -237,7 +216,6 @@ export default function HomeView({ t, lang }) {
           </span>
         </button>
 
-        {/* Wave divider */}
         <svg
           className="block w-full mt-16"
           viewBox="0 0 1440 90"
@@ -353,11 +331,83 @@ export default function HomeView({ t, lang }) {
           </div>
 
           <div className="flow-steps">
-            <FlowStep n="01" title="Photo & Location" desc="Owner uploads an animal photo; location is captured for local weather lookup." />
+            <FlowStep n="01" title="Photo &amp; Location" desc="Owner uploads an animal photo; location is captured for local weather lookup." />
             <FlowStep n="02" title="AI triage" desc="Classifier reads the animal and returns a condition with a confidence score." />
             <FlowStep n="03" title="Risk scoring" desc="Live weather is matched against disease-specific risk profiles for a 0–100 score." />
             <FlowStep n="04" title="Monitoring" desc="Each report is compared to prior ones from the same holding to detect change over time." />
             <FlowStep n="05" title="Escalate or advise" desc="Confident, low-risk cases get a sourced advisory. Serious cases route to a vet officer for review." />
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================================
+       *  ROADMAP — WHAT'S NEXT
+       * ============================================================ */}
+      <section className="py-24" style={{ background: 'var(--cream)' }}>
+        <div className="wrap">
+          <div className="max-w-[600px] mx-auto mb-14 text-center">
+            <span className="section-kicker">On the roadmap</span>
+            <h2
+              className="font-bold"
+              style={{
+                fontFamily: 'Fraunces, serif',
+                fontSize: 'clamp(28px, 4vw, 40px)',
+                color: 'var(--soil)',
+              }}
+            >
+              What's coming next
+            </h2>
+            <p
+              className="mt-4"
+              style={{ fontSize: 15, color: '#6b5c4c', lineHeight: 1.6 }}
+            >
+              The v0.1 prototype covers the full detection-to-advisory
+              loop. These additions complete the field workflow — built
+              on the same architecture.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <RoadmapCard
+              icon="🆔"
+              title="Pashu Aadhaar registration"
+              desc="Link each animal to the national NDLM ID already carried by 36+ crore livestock."
+            />
+            <RoadmapCard
+              icon="💉"
+              title="Vaccination records"
+              desc="Track doses, schedules, and next-due dates for FMD, LSD, and HS."
+            />
+            <RoadmapCard
+              icon="🧪"
+              title="Sample and lab referral"
+              desc="Request a lab test, log results, and attach them to the case history."
+            />
+            <RoadmapCard
+              icon="☎️"
+              title="IVR / voice call"
+              desc="Report symptoms by phone — for owners without smartphones."
+            />
+            <RoadmapCard
+              icon="🐄"
+              title="Herd management"
+              desc="Animal-level profiles, milk yield, breeding records, and lifecycle."
+            />
+            <RoadmapCard
+              icon="⚠️"
+              title="Zoonotic alerts"
+              desc="Dual-track escalation to veterinary and public-health channels."
+            />
+            <RoadmapCard
+              icon="📊"
+              title="District dashboards"
+              desc="Block-level surveillance views for state animal-husbandry officials."
+            />
+            <RoadmapCard
+              icon="💰"
+              title="Insurance claims"
+              desc="Share vet-verified diagnosis with insurers to reduce manual verification."
+            />
           </div>
         </div>
       </section>
@@ -391,6 +441,10 @@ export default function HomeView({ t, lang }) {
     </>
   )
 }
+
+/* ============================================================
+ *  PORTAL CARD
+ * ============================================================ */
 
 function PortalCard({ to, icon, title, desc, cta }) {
   const navigate = useNavigate()
@@ -466,24 +520,80 @@ function PortalIcon({ name }) {
   )
 }
 
+/* ============================================================
+ *  FLOW STEP
+ * ============================================================ */
+
 function FlowStep({ n, title, desc }) {
   return (
     <div className="pl-4" style={{ borderLeft: '2px solid rgba(216,179,74,0.4)' }}>
       <div
         className="mb-2.5"
         style={{ fontFamily: 'Fraunces, serif', fontSize: 15, color: 'var(--gold)' }}
-      >
-        {n}
+        dangerouslySetInnerHTML={{ __html: n }}
+      />
+      <h4
+        className="font-semibold mb-2"
+        style={{ fontSize: 16, color: 'var(--cream)' }}
+        dangerouslySetInnerHTML={{ __html: title }}
+      />
+      <p
+        style={{ fontSize: 13.5, color: 'rgba(247,242,231,0.65)', lineHeight: 1.55 }}
+        dangerouslySetInnerHTML={{ __html: desc }}
+      />
+    </div>
+  )
+}
+
+/* ============================================================
+ *  ROADMAP CARD
+ * ============================================================ */
+
+function RoadmapCard({ icon, title, desc }) {
+  return (
+    <div
+      className="rounded-2xl p-5 transition-all"
+      style={{
+        background: '#ffffff',
+        border: '1px solid var(--cream-dim)',
+        boxShadow: '0 1px 2px rgba(30, 59, 44, 0.03)',
+      }}
+    >
+      <div className="flex items-start justify-between mb-3">
+        <span className="text-2xl">{icon}</span>
+        <span
+          className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full"
+          style={{
+            background: 'rgba(216,179,74,0.18)',
+            color: 'var(--tomato-deep)',
+          }}
+        >
+          Coming soon
+        </span>
       </div>
-      <h4 className="font-semibold mb-2" style={{ fontSize: 16, color: 'var(--cream)' }}>
+      <h4
+        className="font-semibold mb-2"
+        style={{
+          fontFamily: 'Fraunces, serif',
+          fontSize: 15,
+          color: 'var(--soil)',
+        }}
+      >
         {title}
       </h4>
-      <p style={{ fontSize: 13.5, color: 'rgba(247,242,231,0.65)', lineHeight: 1.55 }}>
+      <p
+        className="text-xs leading-relaxed"
+        style={{ color: 'rgba(74,53,38,0.7)' }}
+      >
         {desc}
       </p>
     </div>
   )
 }
+
+/* ============================================================
+ *  VIDEO FRAME RENDERER
+ * ============================================================ */
 
 function VideoFrame({ url }) {
   if (!url) {
