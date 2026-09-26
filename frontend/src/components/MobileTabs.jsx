@@ -2,8 +2,8 @@ import { NavLink } from 'react-router-dom'
 
 export default function MobileTabs({ t }) {
   const tabs = [
-    { to: '/farmer',  label: t.navFarmer,  icon: '🌱' },
-    { to: '/officer', label: t.navOfficer, icon: '👮' },
+    { to: '/farmer',  label: t.navFarmer,  icon: '🐄' },
+    { to: '/officer', label: t.navOfficer, icon: '🩺' },
     { to: '/map',     label: t.navMap,     icon: '🗺️' },
   ]
 

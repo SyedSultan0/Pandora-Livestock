@@ -46,9 +46,9 @@ export default function App() {
             className="font-semibold"
             style={{ fontFamily: 'Fraunces, serif', color: 'var(--cream-dim)', fontSize: 16 }}
           >
-            Pandora Crop Intelligence
+            Pandora Livestock Intelligence
           </span>
-          <span>Prototype build — Smart India Hackathon 2026, PS 26131</span>
+          <span>Prototype build — Smart India Hackathon 2026, PS 26128</span>
         </div>
       </footer>
 

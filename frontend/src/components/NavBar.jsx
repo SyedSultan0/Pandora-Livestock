@@ -7,11 +7,9 @@ export default function NavBar({ lang, onChangeLang, t }) {
   const isHome = location.pathname === '/'
 
   const tabs = [
-    { to: '/',        label: 'Home',  end: true },
     { to: '/farmer',  label: t.navFarmer },
     { to: '/officer', label: t.navOfficer },
     { to: '/map',     label: t.navMap },
-    
   ]
 
   return (
@@ -51,18 +49,17 @@ export default function NavBar({ lang, onChangeLang, t }) {
         {/* Center: nav tabs (desktop) */}
         <div className="hidden md:flex items-center gap-7">
           {tabs.map((tab) => (
-              <NavLink
-                key={tab.to}
-                to={tab.to}
-                end={tab.end}
-                className="text-sm font-medium transition-colors"
-                style={({ isActive }) => ({
-                  color: isActive ? 'var(--gold)' : 'rgba(239, 231, 214, 0.9)',
-                })}
-              >
-                {tab.label}
-              </NavLink>
-            ))}
+            <NavLink
+              key={tab.to}
+              to={tab.to}
+              className="text-sm font-medium transition-colors"
+              style={({ isActive }) => ({
+                color: isActive ? 'var(--gold)' : 'rgba(239, 231, 214, 0.9)',
+              })}
+            >
+              {tab.label}
+            </NavLink>
+          ))}
         </div>
 
         {/* Right: language */}

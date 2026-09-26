@@ -1,4 +1,4 @@
-// Simple i18n — no library, just a dictionary + hook
+// Simple i18n — dictionary + hook
 
 export const LANGUAGES = [
   { code: 'en', label: 'English',  native: 'English' },
@@ -10,18 +10,23 @@ export const LANGUAGES = [
 export const T = {
   en: {
     appName: 'Pandora',
-    appTagline: 'Crop intelligence',
-    navFarmer: 'Farmer',
+    appTagline: 'Livestock intelligence',
+    navFarmer: 'Owner',
     navOfficer: 'Officer',
     navMap: 'Map',
 
-    farmerHeading: 'Farmer',
-    farmerSub: 'Upload a leaf photo to get an instant diagnosis, environmental risk, and a sourced advisory.',
+    farmerHeading: 'Livestock Owner',
+    farmerSub: 'Upload an animal photo to get an instant condition check, environmental risk, and a sourced advisory.',
 
-    leafPhoto: 'Leaf photo',
+    leafPhoto: 'Animal photo',
     choosePhoto: 'Choose photo',
-    analyzeLeaf: 'Analyze leaf',
+    analyzeLeaf: 'Analyze animal',
     analyzing: 'Analyzing…',
+
+    trySample: 'Try a sample',
+    sampleHealthy: 'Healthy animal',
+    sampleDiseased: 'Sick animal',
+    orUploadOwn: 'Or choose your own animal photo',
 
     aiDiagnosis: 'AI Diagnosis',
     confidence: 'Confidence',
@@ -76,18 +81,23 @@ export const T = {
 
   te: {
     appName: 'పాండోరా',
-    appTagline: 'పంట మేధస్సు',
-    navFarmer: 'రైతు',
+    appTagline: 'పశుసంపద మేధస్సు',
+    navFarmer: 'యజమాని',
     navOfficer: 'అధికారి',
     navMap: 'మ్యాప్',
 
-    farmerHeading: 'రైతు',
-    farmerSub: 'తక్షణ నిర్ధారణ, పర్యావరణ ప్రమాదం మరియు మూలాధార సలహా పొందడానికి ఆకు ఫోటో అప్లోడ్ చేయండి.',
+    farmerHeading: 'పశువుల యజమాని',
+    farmerSub: 'తక్షణ పరిస్థితి నిర్ధారణ, పర్యావరణ ప్రమాదం మరియు మూలాధార సలహా పొందడానికి పశువు ఫోటో అప్లోడ్ చేయండి.',
 
-    leafPhoto: 'ఆకు ఫోటో',
+    leafPhoto: 'పశువు ఫోటో',
     choosePhoto: 'ఫోటో ఎంచుకోండి',
-    analyzeLeaf: 'ఆకును విశ్లేషించండి',
+    analyzeLeaf: 'పశువును విశ్లేషించండి',
     analyzing: 'విశ్లేషిస్తోంది…',
+
+    trySample: 'నమూనా ప్రయత్నించండి',
+    sampleHealthy: 'ఆరోగ్యకరమైన పశువు',
+    sampleDiseased: 'అనారోగ్య పశువు',
+    orUploadOwn: 'లేదా మీ స్వంత పశువు ఫోటోను ఎంచుకోండి',
 
     aiDiagnosis: 'AI నిర్ధారణ',
     confidence: 'నమ్మకం',
@@ -142,18 +152,23 @@ export const T = {
 
   hi: {
     appName: 'पैंडोरा',
-    appTagline: 'फसल बुद्धिमत्ता',
-    navFarmer: 'किसान',
+    appTagline: 'पशुधन बुद्धिमत्ता',
+    navFarmer: 'मालिक',
     navOfficer: 'अधिकारी',
     navMap: 'नक्शा',
 
-    farmerHeading: 'किसान',
-    farmerSub: 'तत्काल निदान, पर्यावरणीय जोखिम और स्रोत-आधारित सलाह पाने के लिए पत्ती की फोटो अपलोड करें।',
+    farmerHeading: 'पशुधन मालिक',
+    farmerSub: 'तत्काल स्थिति जांच, पर्यावरणीय जोखिम और स्रोत-आधारित सलाह पाने के लिए पशु की फोटो अपलोड करें।',
 
-    leafPhoto: 'पत्ती की फोटो',
+    leafPhoto: 'पशु की फोटो',
     choosePhoto: 'फोटो चुनें',
-    analyzeLeaf: 'पत्ती का विश्लेषण करें',
+    analyzeLeaf: 'पशु का विश्लेषण करें',
     analyzing: 'विश्लेषण हो रहा है…',
+
+    trySample: 'नमूना आज़माएँ',
+    sampleHealthy: 'स्वस्थ पशु',
+    sampleDiseased: 'बीमार पशु',
+    orUploadOwn: 'या अपनी पशु फोटो चुनें',
 
     aiDiagnosis: 'AI निदान',
     confidence: 'विश्वास',
@@ -208,18 +223,23 @@ export const T = {
 
   mr: {
     appName: 'पॅंडोरा',
-    appTagline: 'पीक बुद्धिमत्ता',
-    navFarmer: 'शेतकरी',
+    appTagline: 'पशुधन बुद्धिमत्ता',
+    navFarmer: 'मालक',
     navOfficer: 'अधिकारी',
     navMap: 'नकाशा',
 
-    farmerHeading: 'शेतकरी',
-    farmerSub: 'तातडीचे निदान, पर्यावरणीय धोका आणि स्रोत-आधारित सल्ला मिळवण्यासाठी पानाचा फोटो अपलोड करा.',
+    farmerHeading: 'पशुधन मालक',
+    farmerSub: 'तातडीचे स्थिती निदान, पर्यावरणीय धोका आणि स्रोत-आधारित सल्ला मिळवण्यासाठी पशूचा फोटो अपलोड करा.',
 
-    leafPhoto: 'पानाचा फोटो',
+    leafPhoto: 'पशूचा फोटो',
     choosePhoto: 'फोटो निवडा',
-    analyzeLeaf: 'पानाचे विश्लेषण करा',
+    analyzeLeaf: 'पशूचे विश्लेषण करा',
     analyzing: 'विश्लेषण करत आहे…',
+
+    trySample: 'नमुना वापरून पहा',
+    sampleHealthy: 'निरोगी पशू',
+    sampleDiseased: 'आजारी पशू',
+    orUploadOwn: 'किंवा स्वतःचा पशूचा फोटो निवडा',
 
     aiDiagnosis: 'AI निदान',
     confidence: 'विश्वास',

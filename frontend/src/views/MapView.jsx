@@ -9,13 +9,9 @@ const MH_ZOOM = 6
 
 const CONDITION_OPTIONS = [
   { value: '', label: 'All conditions' },
-  { value: 'Late Blight', label: 'Late Blight' },
-  { value: 'Early Blight', label: 'Early Blight' },
-  { value: 'Leaf Miner', label: 'Leaf Miner' },
-  { value: 'Spotted Wilt Virus', label: 'Spotted Wilt Virus' },
-  { value: 'Magnesium Deficiency', label: 'Magnesium Deficiency' },
-  { value: 'Nitrogen Deficiency', label: 'Nitrogen Deficiency' },
-  { value: 'Potassium Deficiency', label: 'Potassium Deficiency' },
+  { value: 'Lumpy Skin Disease', label: 'Lumpy Skin Disease' },
+  { value: 'Foot and Mouth Disease', label: 'Foot and Mouth Disease' },
+  { value: 'Foot Infection', label: 'Foot Infection' },
   { value: 'Healthy', label: 'Healthy' },
 ]
 
@@ -65,17 +61,16 @@ export default function MapView({ t, lang }) {
           className="font-bold mb-2"
           style={{ fontFamily: 'Fraunces, serif', fontSize: 32, color: 'var(--soil)' }}
         >
-          🗺 {t?.mapHeading || 'Hotspot Map'}
+          🗺 {t.mapHeading || 'Hotspot Map'}
         </h1>
         <p style={{ color: 'rgba(74,53,38,0.7)', fontSize: 15 }}>
-          {t?.mapSub || 'Regional outbreak signals across Maharashtra. Each pin is a cluster of same-condition reports.'}
+          {t.mapSub || 'Regional outbreak signals across Maharashtra. Each pin is a cluster of same-condition livestock reports.'}
         </p>
       </header>
 
-      {/* Filters */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <label className="block">
-          <span className="label">{t?.condition || 'Condition'}</span>
+          <span className="label">{t.condition || 'Condition'}</span>
           <select
             value={condition}
             onChange={(e) => setCondition(e.target.value)}
@@ -88,7 +83,7 @@ export default function MapView({ t, lang }) {
         </label>
 
         <label className="block">
-          <span className="label">{t?.timeWindow || 'Time window (days)'}</span>
+          <span className="label">{t.timeWindow || 'Time window (days)'}</span>
           <input
             type="number" min="1" max="90"
             value={days}
@@ -98,7 +93,7 @@ export default function MapView({ t, lang }) {
         </label>
 
         <label className="block">
-          <span className="label">{t?.minReports || 'Min reports'}</span>
+          <span className="label">{t.minReports || 'Min reports'}</span>
           <input
             type="number" min="2" max="20"
             value={minReports}
@@ -108,7 +103,7 @@ export default function MapView({ t, lang }) {
         </label>
 
         <label className="block">
-          <span className="label">{t?.radiusKm || 'Radius (km)'}</span>
+          <span className="label">{t.radiusKm || 'Radius (km)'}</span>
           <input
             type="number" min="1" max="100"
             value={radiusKm}
@@ -124,10 +119,7 @@ export default function MapView({ t, lang }) {
 
         <div
           className="lg:col-span-2 overflow-hidden"
-          style={{
-            borderRadius: 20,
-            border: '1px solid var(--cream-dim)',
-          }}
+          style={{ borderRadius: 20, border: '1px solid var(--cream-dim)' }}
         >
           <div style={{ height: 500 }}>
             <MapContainer
@@ -165,16 +157,16 @@ export default function MapView({ t, lang }) {
 
         <div className="card p-4">
           {loading ? (
-            <LoadingSpinner label={t?.loading || 'Loading hotspots…'} />
+            <LoadingSpinner label={t.loading || 'Loading hotspots…'} />
           ) : selected ? (
-            <HotspotDetail hotspot={selected} onClear={() => setSelected(null)} />
+            <HotspotDetail hotspot={selected} onClear={() => setSelected(null)} t={t} />
           ) : (
             <div className="text-sm space-y-3" style={{ color: 'rgba(74,53,38,0.75)' }}>
               <div className="font-semibold" style={{ color: 'var(--soil)', fontSize: 15 }}>
                 {hotspots.length} hotspot{hotspots.length === 1 ? '' : 's'}
               </div>
               <p>
-                {t?.clickPin || 'Click a pin on the map to see cluster details.'}
+                {t.clickPin || 'Click a pin on the map to see cluster details.'}
               </p>
 
               <div className="pt-3" style={{ borderTop: '1px solid var(--cream-dim)' }}>
@@ -182,7 +174,7 @@ export default function MapView({ t, lang }) {
                   className="text-xs uppercase tracking-wider mb-2 font-semibold"
                   style={{ color: 'rgba(74,53,38,0.55)' }}
                 >
-                  {t?.legend || 'Legend'}
+                  {t.legend || 'Legend'}
                 </div>
                 <ul className="space-y-1 text-xs">
                   <li className="flex items-center gap-2">
@@ -211,10 +203,6 @@ export default function MapView({ t, lang }) {
     </div>
   )
 }
-
-/* ------------------------------------------------------------------
- *  Detail panel
- * ------------------------------------------------------------------ */
 
 function HotspotDetail({ hotspot, onClear }) {
   const h = hotspot
@@ -269,7 +257,7 @@ function HotspotDetail({ hotspot, onClear }) {
             className="text-xs uppercase tracking-wider mb-2 font-semibold"
             style={{ color: 'rgba(74,53,38,0.55)' }}
           >
-            Farms in this cluster
+            Holdings in this cluster
           </div>
           <ul className="space-y-2">
             {h.farms.map((farm) => (
@@ -314,10 +302,7 @@ function Stat({ label, value }) {
   return (
     <div
       className="rounded-xl px-3 py-2"
-      style={{
-        background: 'var(--cream)',
-        border: '1px solid var(--cream-dim)',
-      }}
+      style={{ background: 'var(--cream)', border: '1px solid var(--cream-dim)' }}
     >
       <div
         className="text-[10px] uppercase tracking-wider font-semibold"
@@ -331,10 +316,6 @@ function Stat({ label, value }) {
     </div>
   )
 }
-
-/* ------------------------------------------------------------------
- *  Helpers
- * ------------------------------------------------------------------ */
 
 function pinRadius(count) {
   const base = 8

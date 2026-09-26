@@ -128,14 +128,6 @@ def _validate_advisory_data() -> None:
                         f"{condition_id}/{risk_level} is missing '{field}'."
                     )
 
-    total_combinations = len(advisories) * len(SUPPORTED_RISK_LEVELS)
-
-    if total_combinations != 32:
-        raise ValueError(
-            f"Expected 32 advisory combinations, "
-            f"found {total_combinations}."
-        )
-
 
 _validate_advisory_data()
 

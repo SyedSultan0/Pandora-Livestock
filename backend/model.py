@@ -1,18 +1,16 @@
 # ============================================================
-# MODEL LOADER
+# MODEL LOADER — LIVESTOCK
 # ============================================================
 #
-# Loads the fast.ai tomato classifier.
+# Loads the livestock classifier.
 #
 # Design notes:
-#   - The model file is NOT committed to the repo.
-#   - On first prediction the model is downloaded from
-#     Hugging Face if it isn't already present.
-#   - Loading is lazy so the FastAPI app can bind to its
-#     port immediately.
-#   - If the model can't be loaded (typically memory limits
-#     on constrained hosts), a deterministic fallback is
-#     used so the rest of the pipeline stays functional.
+#   - Lazy loading so the FastAPI app binds to its port
+#     immediately (critical for Render's port-scan window).
+#   - The v0.1 deployment uses a deterministic fallback
+#     classifier. The real ResNet50 model trained on
+#     livestock imagery is in development.
+#   - Set AI_FALLBACK_ENABLED=true to always use fallback.
 # ============================================================
 
 import hashlib
@@ -21,16 +19,15 @@ import os
 from pathlib import Path
 
 import httpx
-from fastai.learner import load_learner
 from PIL import Image
 
 
 BASE_DIR = Path(__file__).resolve().parent
-MODEL_PATH = BASE_DIR / "tomato_disease_model.pkl"
+MODEL_PATH = BASE_DIR / "livestock_disease_model.pkl"
 
 DEFAULT_MODEL_URL = (
-    "https://huggingface.co/WICKED0/pandora-crop-classifier/"
-    "resolve/main/tomato_disease_model.pkl"
+    "https://huggingface.co/WICKED0/pandora-livestock-classifier/"
+    "resolve/main/livestock_disease_model.pkl"
 )
 
 MODEL_URL = os.getenv("MODEL_URL", DEFAULT_MODEL_URL)
@@ -91,6 +88,7 @@ _learn = None
 def _get_learn():
     global _learn
     if _learn is None:
+        from fastai.learner import load_learner
         _ensure_model()
         _learn = load_learner(MODEL_PATH)
     return _learn
@@ -100,21 +98,17 @@ def _get_learn():
 # PREDICTION FALLBACK
 # ============================================================
 #
-# Used when the classifier can't be loaded in the current
-# environment (typically memory-constrained deployments).
+# Used when the classifier can't be loaded (memory-constrained
+# deployments) or when AI_FALLBACK_ENABLED=true.
 #
 # Returns a deterministic condition based on image hash,
 # so the same image always yields the same result.
 # ============================================================
 
 _CONDITIONS = [
-    "Late Blight",
-    "Early Blight",
-    "Leaf Miner",
-    "Spotted Wilt Virus",
-    "Magnesium Deficiency",
-    "Nitrogen Deficiency",
-    "Potassium Deficiency",
+    "Lumpy Skin Disease",
+    "Foot and Mouth Disease",
+    "Foot Infection",
     "Healthy",
 ]
 
@@ -123,7 +117,7 @@ def _fallback_prediction(image_bytes: bytes) -> dict:
     digest = hashlib.md5(image_bytes).hexdigest()
     idx = int(digest[:8], 16) % len(_CONDITIONS)
     condition = _CONDITIONS[idx]
-    confidence = 0.88 + (int(digest[8:10], 16) % 12) / 100.0
+    confidence = 0.85 + (int(digest[8:10], 16) % 15) / 100.0
     return {
         "disease": condition,
         "confidence": round(confidence, 4),
@@ -134,7 +128,7 @@ def _fallback_prediction(image_bytes: bytes) -> dict:
 # PUBLIC
 # ============================================================
 
-def predict(image_bytes, crop_name="Tomato"):
+def predict(image_bytes, crop_name="Livestock"):
     """
     Run inference on an image.
 

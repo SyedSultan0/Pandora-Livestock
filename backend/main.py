@@ -774,7 +774,7 @@ def create_health_report(
 
     prediction_record = AIPrediction(
         health_report_id=health_report.id,
-        model_name="tomato-disease-v1",
+        model_name="livestock-disease-v1",
         model_version="1.0",
         prediction_type="CLASSIFICATION",
         predicted_class=prediction["disease"],
@@ -1560,11 +1560,65 @@ def get_health_report(
             "model_version": advisory_record.model_version,
             "sources": advisory_record.sources,
             "created_at": advisory_record.created_at,
-            "evidence": _build_evidence_for_report(
-                db,
-                health_report.id
-            )
         }
+
+        # --------------------------------------------------------
+        # Reconstruct the full advisory so the frontend gets the
+        # complete structure (immediate_actions, prevention,
+        # monitoring, expert_referral) — not just the stored summary.
+        #
+        # Fall back to hardcoded text if the engine can't be called.
+        # --------------------------------------------------------
+
+        try:
+
+            if prediction_record and advisory_record.risk_level:
+
+                full_advisory = generate_advisory(
+                    disease=prediction_record.predicted_class,
+                    risk_level=advisory_record.risk_level,
+                    confidence=prediction_record.confidence or 0.9,
+                    weather_snapshot={},
+                )
+
+                response["advisory"].update({
+                    "summary": full_advisory.get("summary"),
+                    "immediate_actions": full_advisory.get("immediate_actions", []),
+                    "prevention": full_advisory.get("prevention", []),
+                    "monitoring": full_advisory.get("monitoring", []),
+                    "expert_referral": full_advisory.get("expert_referral", False),
+                    "category": full_advisory.get("category"),
+                    "cause": full_advisory.get("cause"),
+                })
+
+            else:
+                raise ValueError("Missing prediction or risk level")
+
+        except Exception as e:
+
+            print(f"[advisory] Reconstruction failed: {e}")
+
+            # --------------------------------------------------------
+            # Hardcoded fallback — always produces a readable advisory
+            # --------------------------------------------------------
+
+            response["advisory"].update({
+                "summary": advisory_record.advisory_text,
+                "immediate_actions": [
+                    "Follow the guidance in the summary above.",
+                    "Contact your local veterinary officer if symptoms persist."
+                ],
+                "prevention": [
+                    "Maintain clean, dry shelters and routine vaccination.",
+                    "Isolate any animal showing new symptoms."
+                ],
+                "monitoring": [
+                    "Re-check the animal in 3-5 days."
+                ],
+                "expert_referral": False,
+                "category": "disease",
+                "cause": "Refer to the cited source for details.",
+            })
 
     # --------------------------------------------------------
     # Monitoring relationship

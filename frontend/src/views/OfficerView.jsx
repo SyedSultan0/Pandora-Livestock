@@ -7,17 +7,6 @@ import {
 import LoadingSpinner from '../components/LoadingSpinner.jsx'
 import ErrorBox from '../components/ErrorBox.jsx'
 
-/* ------------------------------------------------------------------
- *  OfficerView
- *
- *  Two panels:
- *    - Left  : pending queue (severity-sorted, from GET /expert-review/queue)
- *    - Right : full detail of the selected case + verdict form
- *
- *  Submitting a verdict removes the case from the queue and shows it
- *  in the "recently reviewed" section until the page is refreshed.
- * ------------------------------------------------------------------ */
-
 const DEMO_EXPERT_ID = 1
 
 const VERDICT_OPTIONS = [
@@ -27,7 +16,14 @@ const VERDICT_OPTIONS = [
   { value: 'INCONCLUSIVE', label: '❓ Inconclusive (need more info)' },
 ]
 
-export default function OfficerView() {
+const CONDITION_OPTIONS = [
+  'Lumpy Skin Disease',
+  'Foot and Mouth Disease',
+  'Foot Infection',
+  'Healthy',
+]
+
+export default function OfficerView({ t, lang }) {
 
   const [queue, setQueue] = useState([])
   const [loadingQueue, setLoadingQueue] = useState(true)
@@ -40,7 +36,6 @@ export default function OfficerView() {
 
   const [justReviewed, setJustReviewed] = useState([])
 
-  // Load queue on mount
   useEffect(() => {
     loadQueue()
   }, [])
@@ -79,7 +74,6 @@ export default function OfficerView() {
   }
 
   function handleReviewed(reportId, verdict) {
-    // Remove from queue, add to "recently reviewed"
     const item = queue.find((q) => q.health_report_id === reportId)
     setQueue((prev) => prev.filter((q) => q.health_report_id !== reportId))
     if (item) {
@@ -90,12 +84,17 @@ export default function OfficerView() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6 space-y-4">
+    <div className="wrap py-8 md:py-12 space-y-6">
 
       <header>
-        <h1 className="text-2xl font-bold mb-1">👮 Officer</h1>
-        <p className="text-slate-400 text-sm">
-          Review flagged cases and submit verdicts. Cases are
+        <h1
+          className="font-bold mb-2"
+          style={{ fontFamily: 'Fraunces, serif', fontSize: 32, color: 'var(--soil)' }}
+        >
+          🩺 {t.navOfficer}
+        </h1>
+        <p style={{ color: 'rgba(74,53,38,0.7)', fontSize: 15 }}>
+          Review escalated livestock cases and submit verdicts. Cases are
           sorted by severity, newest first.
         </p>
       </header>
@@ -104,18 +103,20 @@ export default function OfficerView() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
-        {/* Left: queue */}
         <div className="lg:col-span-1 space-y-3">
-          <section className="rounded-lg border border-slate-800 bg-slate-900 p-4">
-            <h2 className="text-sm uppercase tracking-wide text-slate-500 mb-3">
-              Pending queue
+          <section className="card p-4">
+            <h2
+              className="text-xs uppercase tracking-wider font-semibold mb-3"
+              style={{ color: 'rgba(74,53,38,0.55)' }}
+            >
+              {t.pendingQueue || 'Pending queue'}
             </h2>
 
             {loadingQueue ? (
               <LoadingSpinner label="Loading queue…" />
             ) : queue.length === 0 ? (
-              <p className="text-sm text-slate-500">
-                Nothing waiting for review. ✓
+              <p className="text-sm" style={{ color: 'rgba(74,53,38,0.55)' }}>
+                {t.nothingWaiting || 'Nothing waiting for review. ✓'}
               </p>
             ) : (
               <ul className="space-y-2">
@@ -132,18 +133,22 @@ export default function OfficerView() {
           </section>
 
           {justReviewed.length > 0 && (
-            <section className="rounded-lg border border-slate-800 bg-slate-900 p-4">
-              <h2 className="text-sm uppercase tracking-wide text-slate-500 mb-3">
-                Reviewed this session
+            <section className="card p-4">
+              <h2
+                className="text-xs uppercase tracking-wider font-semibold mb-3"
+                style={{ color: 'rgba(74,53,38,0.55)' }}
+              >
+                {t.reviewedSession || 'Reviewed this session'}
               </h2>
               <ul className="space-y-2">
                 {justReviewed.map((item) => (
                   <li
                     key={item.health_report_id}
-                    className="text-xs text-slate-400 flex items-center justify-between"
+                    className="text-xs flex items-center justify-between"
+                    style={{ color: 'rgba(74,53,38,0.7)' }}
                   >
                     <span>#{item.health_report_id} · {item.prediction?.predicted_class}</span>
-                    <span className="text-emerald-500">{item.verdict}</span>
+                    <span style={{ color: 'var(--green-mid)' }}>{item.verdict}</span>
                   </li>
                 ))}
               </ul>
@@ -151,37 +156,32 @@ export default function OfficerView() {
           )}
         </div>
 
-        {/* Right: detail */}
         <div className="lg:col-span-2">
           {!selectedId ? (
-            <div className="rounded-lg border border-slate-800 bg-slate-900 p-8 text-center text-slate-500 text-sm">
-              Select a case from the queue to review it.
+            <div className="card p-8 text-center text-sm" style={{ color: 'rgba(74,53,38,0.55)' }}>
+              {t.selectCase || 'Select a case from the queue to review it.'}
             </div>
           ) : loadingReport ? (
-            <div className="rounded-lg border border-slate-800 bg-slate-900 p-8">
+            <div className="card p-8">
               <LoadingSpinner label="Loading report…" />
             </div>
           ) : reportError ? (
-            <div className="rounded-lg border border-slate-800 bg-slate-900 p-8">
+            <div className="card p-8">
               <ErrorBox message={reportError} />
             </div>
           ) : (
             <ReportDetail
               report={report}
               onReviewed={(verdict) => handleReviewed(selectedId, verdict)}
+              t={t}
             />
           )}
         </div>
 
       </div>
-
     </div>
   )
 }
-
-/* ------------------------------------------------------------------
- *  Queue item
- * ------------------------------------------------------------------ */
 
 function QueueItem({ item, selected, onSelect }) {
   const risk = item.risk?.risk_level
@@ -191,27 +191,26 @@ function QueueItem({ item, selected, onSelect }) {
     <li>
       <button
         onClick={onSelect}
-        className={
-          'w-full text-left rounded-md border px-3 py-2 transition ' +
-          (selected
-            ? 'border-emerald-500 bg-slate-950'
-            : 'border-slate-800 bg-slate-950 hover:border-slate-600')
-        }
+        className="w-full text-left rounded-md border px-3 py-2 transition"
+        style={{
+          borderColor: selected ? 'var(--green-mid)' : 'var(--cream-dim)',
+          background: selected ? 'var(--cream)' : '#fff',
+        }}
       >
         <div className="flex items-center justify-between mb-1">
-          <span className="text-xs text-slate-500">
+          <span className="text-xs" style={{ color: 'rgba(74,53,38,0.55)' }}>
             #{item.health_report_id}
           </span>
           <span className={'text-xs font-semibold ' + riskText(risk)}>
             {risk}
           </span>
         </div>
-        <div className="text-sm font-medium text-slate-100 truncate">
+        <div className="text-sm font-medium truncate" style={{ color: 'var(--soil)' }}>
           {item.prediction?.predicted_class}
         </div>
-        <div className="text-xs text-slate-500 mt-1 flex items-center justify-between">
+        <div className="text-xs mt-1 flex items-center justify-between" style={{ color: 'rgba(74,53,38,0.55)' }}>
           <span>{item.farm?.district || '—'}</span>
-          <span className="text-orange-400">
+          <span style={{ color: 'var(--gold)' }}>
             {decisionLabel(decision)}
           </span>
         </div>
@@ -220,11 +219,7 @@ function QueueItem({ item, selected, onSelect }) {
   )
 }
 
-/* ------------------------------------------------------------------
- *  Report detail + verdict form
- * ------------------------------------------------------------------ */
-
-function ReportDetail({ report, onReviewed }) {
+function ReportDetail({ report, onReviewed, t }) {
 
   const prediction = report.prediction
   const risk = report.risk
@@ -233,7 +228,6 @@ function ReportDetail({ report, onReviewed }) {
   const explanation = report.explanation
   const escalation = report.escalation
 
-  // Verdict form state
   const [status, setStatus] = useState('CONFIRMED')
   const [confirmedCondition, setConfirmedCondition] = useState(
     prediction?.predicted_class || ''
@@ -241,18 +235,6 @@ function ReportDetail({ report, onReviewed }) {
   const [comments, setComments] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState(null)
-
-  // All the conditions available in your system
-  const CONDITION_OPTIONS = [
-    'Late Blight',
-    'Early Blight',
-    'Leaf Miner',
-    'Spotted Wilt Virus',
-    'Magnesium Deficiency',
-    'Nitrogen Deficiency',
-    'Potassium Deficiency',
-    'Healthy',
-  ]
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -266,7 +248,6 @@ function ReportDetail({ report, onReviewed }) {
         comments: comments || null,
       }
 
-      // Only send confirmed_condition for CONFIRMED / CORRECTED
       if (status === 'CONFIRMED' || status === 'CORRECTED') {
         payload.confirmed_condition = confirmedCondition
       }
@@ -285,17 +266,19 @@ function ReportDetail({ report, onReviewed }) {
   return (
     <div className="space-y-4">
 
-      {/* Header */}
-      <section className="rounded-lg border border-slate-800 bg-slate-900 p-5">
+      <section className="card p-5">
         <div className="flex items-start justify-between">
           <div>
-            <div className="text-xs text-slate-500">
+            <div className="text-xs" style={{ color: 'rgba(74,53,38,0.55)' }}>
               Report #{report.health_report?.id}
             </div>
-            <div className="text-xl font-bold text-slate-100 mt-1">
+            <div
+              className="text-xl font-bold mt-1"
+              style={{ fontFamily: 'Fraunces, serif', color: 'var(--soil)' }}
+            >
               {prediction?.predicted_class || 'Unknown'}
             </div>
-            <div className="text-xs text-slate-400 mt-1">
+            <div className="text-xs mt-1" style={{ color: 'rgba(74,53,38,0.6)' }}>
               {report.farm?.farm_name} · {report.farm?.district}
             </div>
           </div>
@@ -304,7 +287,7 @@ function ReportDetail({ report, onReviewed }) {
               <div className={'text-lg font-bold ' + riskText(risk.risk_level)}>
                 {risk.risk_level}
               </div>
-              <div className="text-xs text-slate-500">
+              <div className="text-xs" style={{ color: 'rgba(74,53,38,0.55)' }}>
                 {risk.risk_score}/100
               </div>
             </div>
@@ -312,15 +295,18 @@ function ReportDetail({ report, onReviewed }) {
         </div>
 
         {escalation && (
-          <div className="mt-3 pt-3 border-t border-slate-800">
-            <div className="text-xs uppercase tracking-wide text-slate-500 mb-1">
+          <div className="mt-3 pt-3" style={{ borderTop: '1px solid var(--cream-dim)' }}>
+            <div
+              className="text-xs uppercase tracking-wider font-semibold mb-1"
+              style={{ color: 'rgba(74,53,38,0.55)' }}
+            >
               Escalation
             </div>
-            <div className="font-semibold text-orange-400">
+            <div className="font-semibold" style={{ color: 'var(--gold)' }}>
               {decisionLabel(escalation.decision)}
             </div>
             {escalation.reasons?.length > 0 && (
-              <ul className="text-xs text-slate-400 mt-1 space-y-0.5">
+              <ul className="text-xs mt-1 space-y-0.5" style={{ color: 'rgba(74,53,38,0.6)' }}>
                 {escalation.reasons.map((r, i) => (
                   <li key={i}>• {r}</li>
                 ))}
@@ -330,82 +316,78 @@ function ReportDetail({ report, onReviewed }) {
         )}
       </section>
 
-      {/* Advisory */}
       {advisory && (
-        <section className="rounded-lg border border-slate-800 bg-slate-900 p-5">
-          <h3 className="text-sm uppercase tracking-wide text-slate-500 mb-2">
+        <section className="card p-5">
+          <h3
+            className="text-xs uppercase tracking-wider font-semibold mb-2"
+            style={{ color: 'rgba(74,53,38,0.55)' }}
+          >
             Advisory
           </h3>
-          <p className="text-slate-200 text-sm">
+          <p className="text-sm" style={{ color: 'var(--soil)' }}>
             {advisory.advisory_text}
           </p>
           {advisory.sources && (
-            <p className="text-xs text-slate-500 mt-2">
+            <p className="text-xs mt-2" style={{ color: 'rgba(74,53,38,0.55)' }}>
               Source: {advisory.sources.display_source}
             </p>
           )}
         </section>
       )}
 
-      {/* Evidence */}
       {evidence && (
-        <section className="rounded-lg border border-slate-800 bg-slate-900 p-5">
-          <h3 className="text-sm uppercase tracking-wide text-slate-500 mb-2">
+        <section className="card p-5">
+          <h3
+            className="text-xs uppercase tracking-wider font-semibold mb-2"
+            style={{ color: 'rgba(74,53,38,0.55)' }}
+          >
             📚 Evidence
           </h3>
-          <p className="text-xs text-slate-400 mb-2">
+          <p className="text-xs mb-2" style={{ color: 'rgba(74,53,38,0.55)' }}>
             {evidence.document_title}
           </p>
-          <p className="text-sm text-slate-300 whitespace-pre-line max-h-64 overflow-y-auto">
+          <p className="text-sm whitespace-pre-line max-h-64 overflow-y-auto" style={{ color: 'rgba(74,53,38,0.85)' }}>
             {evidence.chunk_text}
           </p>
         </section>
       )}
 
-      {/* Explanation */}
       {explanation?.text && (
-        <section className="rounded-lg border border-slate-800 bg-slate-900 p-5">
-          <h3 className="text-sm uppercase tracking-wide text-slate-500 mb-2">
+        <section className="card p-5">
+          <h3
+            className="text-xs uppercase tracking-wider font-semibold mb-2"
+            style={{ color: 'rgba(74,53,38,0.55)' }}
+          >
             💬 Explanation
           </h3>
-          <p className="text-slate-200 text-sm">
+          <p className="text-sm" style={{ color: 'var(--soil)' }}>
             {explanation.text}
           </p>
         </section>
       )}
 
-      {/* Verdict form */}
-       {/* Verdict form */}
-      {/* Verdict form */}
       <section
         className="card p-6"
-        style={{
-          borderColor: 'rgba(193, 68, 45, 0.28)',
-          borderWidth: 2,
-        }}
+        style={{ borderColor: 'rgba(193, 68, 45, 0.28)', borderWidth: 2 }}
       >
         <h3
-          className="text-xs uppercase tracking-wider mb-4 font-semibold"
+          className="text-xs uppercase tracking-wider font-semibold mb-4"
           style={{ color: 'var(--tomato-deep)' }}
         >
-          Submit verdict
+          {t.submitVerdict || 'Submit verdict'}
         </h3>
 
         <form onSubmit={handleSubmit} className="space-y-4">
 
           <label className="block">
-            <span className="label">
-              Verdict
-            </span>
+            <span className="label">{t.verdict || 'Verdict'}</span>
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value)}
               className="input"
             >
               {VERDICT_OPTIONS.map((v) => (
-                <option key={v.value} value={v.value}>
-                  {v.label}
-                </option>
+                <option key={v.value} value={v.value}>{v.label}</option>
               ))}
             </select>
           </label>
@@ -414,8 +396,8 @@ function ReportDetail({ report, onReviewed }) {
             <label className="block">
               <span className="label">
                 {status === 'CONFIRMED'
-                  ? 'Confirm the condition'
-                  : 'Correct to which condition?'}
+                  ? (t.confirmCondition || 'Confirm the condition')
+                  : (t.correctTo || 'Correct to which condition?')}
               </span>
               <select
                 value={confirmedCondition}
@@ -430,9 +412,7 @@ function ReportDetail({ report, onReviewed }) {
           )}
 
           <label className="block">
-            <span className="label">
-              Comments (optional)
-            </span>
+            <span className="label">{t.comments || 'Comments (optional)'}</span>
             <textarea
               value={comments}
               onChange={(e) => setComments(e.target.value)}
@@ -450,7 +430,7 @@ function ReportDetail({ report, onReviewed }) {
             disabled={submitting}
             className="btn-primary w-full justify-center"
           >
-            {submitting ? 'Submitting…' : 'Submit verdict'}
+            {submitting ? (t.submitting || 'Submitting…') : (t.submitVerdict || 'Submit verdict')}
           </button>
         </form>
       </section>
@@ -459,17 +439,13 @@ function ReportDetail({ report, onReviewed }) {
   )
 }
 
-/* ------------------------------------------------------------------
- *  Helpers
- * ------------------------------------------------------------------ */
-
 function riskText(level) {
   switch ((level || '').toUpperCase()) {
-    case 'LOW':      return 'text-emerald-400'
-    case 'MODERATE': return 'text-yellow-400'
-    case 'HIGH':     return 'text-orange-400'
-    case 'CRITICAL': return 'text-red-400'
-    default:         return 'text-slate-300'
+    case 'LOW':      return 'risk-low'
+    case 'MODERATE': return 'risk-moderate'
+    case 'HIGH':     return 'risk-high'
+    case 'CRITICAL': return 'risk-critical'
+    default:         return ''
   }
 }
 

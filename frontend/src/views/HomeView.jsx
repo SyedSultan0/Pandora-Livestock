@@ -3,12 +3,6 @@ import { useNavigate } from 'react-router-dom'
 
 // --------------------------------------------------------
 //  PASTE YOUR DEMO VIDEO LINK HERE WHEN READY
-//
-//  Supports:
-//    - YouTube URL:   "https://www.youtube.com/watch?v=XXXX"
-//    - YouTube short: "https://youtu.be/XXXX"
-//    - Direct MP4:    "/demo.mp4"  (place file in frontend/public/)
-//    - Leave empty    → modal shows a placeholder
 // --------------------------------------------------------
 const DEMO_VIDEO_URL = ''
 
@@ -44,7 +38,7 @@ export default function HomeView({ t, lang }) {
                 className="w-1.5 h-1.5 rounded-full"
                 style={{ background: 'var(--tomato)' }}
               />
-              SIH 2026 · PS 26131
+              SIH 2026 · PS 26128
             </span>
 
             <h1
@@ -57,7 +51,7 @@ export default function HomeView({ t, lang }) {
                 letterSpacing: '-0.01em',
               }}
             >
-              Catching crop
+              Catching livestock
               <br />
               disease{' '}
               <em style={{ fontStyle: 'normal', color: 'var(--green-soft)' }}>
@@ -76,9 +70,9 @@ export default function HomeView({ t, lang }) {
                 maxWidth: 480,
               }}
             >
-              Pandora Crop Intelligence pairs an on-field AI diagnosis
-              with weather-aware risk scoring and an officer review
-              layer — so smallholder farmers get answers that are
+              Pandora Livestock Intelligence pairs an on-field AI
+              triage with weather-aware risk scoring and a veterinary
+              review layer — so livestock owners get answers that are
               checked, not just guessed.
             </p>
 
@@ -106,7 +100,7 @@ export default function HomeView({ t, lang }) {
             </div>
           </div>
 
-          {/* Right column — illustration + stat chips */}
+          {/* Right column — animated cow illustration + stat chips */}
           <div className="hero-art">
             <div
               className="stat-chip chip-1"
@@ -115,34 +109,98 @@ export default function HomeView({ t, lang }) {
                 border: '1px solid rgba(216,179,74,0.3)',
               }}
             >
-              <div className="num">8</div>
-              <div className="lbl">disease classes detected</div>
+              <div className="num">4</div>
+              <div className="lbl">livestock conditions detected</div>
             </div>
 
+            {/* ============================================
+             *  ANIMATED COW ILLUSTRATION
+             * ============================================ */}
             <svg viewBox="0 0 400 460" xmlns="http://www.w3.org/2000/svg">
-              <ellipse cx="200" cy="430" rx="150" ry="18" fill="#142a1e" />
-              <path d="M200 420V180" stroke="#4E7A57" strokeWidth="10" strokeLinecap="round" />
-              <path d="M200 260c-40-10-70-45-72-90 45 5 78 35 90 75" fill="#547C5A" />
-              <path d="M200 220c40-8 72-40 76-84-46 3-80 32-94 70" fill="#3F6B4A" />
-              <path d="M200 330c-46-6-82-40-88-88 50 2 88 32 104 74" fill="#4E7A57" />
-              <path d="M200 300c44-6 78-38 84-84-48 2-84 30-100 70" fill="#3F6B4A" />
-              <circle cx="150" cy="150" r="28" fill="#C1442D" />
-              <circle cx="150" cy="150" r="28" fill="url(#g1)" />
-              <path d="M140 128c4-8 14-10 20-6" stroke="#4E7A57" strokeWidth="4" strokeLinecap="round" fill="none" />
-              <circle cx="252" cy="128" r="34" fill="#C1442D" />
-              <circle cx="252" cy="128" r="34" fill="url(#g2)" />
-              <path d="M238 100c5-10 18-12 26-7" stroke="#4E7A57" strokeWidth="4" strokeLinecap="round" fill="none" />
-              <circle cx="215" cy="205" r="20" fill="#D8B34A" />
-              <defs>
-                <radialGradient id="g1" cx="0.35" cy="0.3" r="0.8">
-                  <stop offset="0" stopColor="#E0654A" />
-                  <stop offset="1" stopColor="#8F3121" />
-                </radialGradient>
-                <radialGradient id="g2" cx="0.35" cy="0.3" r="0.8">
-                  <stop offset="0" stopColor="#E0654A" />
-                  <stop offset="1" stopColor="#8F3121" />
-                </radialGradient>
-              </defs>
+              {/* Ground shadow */}
+              <ellipse cx="200" cy="432" rx="150" ry="14" fill="#142a1e" opacity="0.6" />
+
+              {/* Grass tufts */}
+              <g className="cow-grass">
+                <path d="M60 425 q4 -18 8 0" stroke="#4E7A57" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <path d="M75 428 q5 -22 10 0" stroke="#547C5A" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <path d="M320 428 q5 -20 10 0" stroke="#4E7A57" strokeWidth="3" fill="none" strokeLinecap="round" />
+                <path d="M338 425 q4 -16 8 0" stroke="#547C5A" strokeWidth="3" fill="none" strokeLinecap="round" />
+              </g>
+
+              {/* Cow (animated) */}
+              <g className="cow-group">
+                {/* Back legs */}
+                <rect x="245" y="360" width="18" height="68" rx="6" fill="#6E4630" />
+                <rect x="270" y="360" width="18" height="68" rx="6" fill="#8B5A3C" />
+
+                {/* Tail */}
+                <g className="cow-tail" style={{ transformOrigin: '305px 250px' }}>
+                  <path
+                    d="M305 250 Q330 280 335 320 Q338 345 330 360"
+                    stroke="#6E4630"
+                    strokeWidth="6"
+                    fill="none"
+                    strokeLinecap="round"
+                  />
+                  <ellipse cx="330" cy="366" rx="10" ry="12" fill="#4A3526" />
+                </g>
+
+                {/* Body */}
+                <path
+                  d="M110 240
+                     Q105 210 140 200
+                     L270 200
+                     Q310 205 310 240
+                     L310 320
+                     Q310 360 270 362
+                     L145 362
+                     Q110 358 108 320
+                     Z"
+                  fill="#C9A685"
+                />
+
+                {/* Body spots */}
+                <ellipse cx="180" cy="255" rx="24" ry="18" fill="#8B5A3C" opacity="0.55" />
+                <ellipse cx="255" cy="300" rx="20" ry="15" fill="#6E4630" opacity="0.45" />
+                <ellipse cx="150" cy="320" rx="16" ry="12" fill="#8B5A3C" opacity="0.4" />
+
+                {/* Front legs */}
+                <rect x="130" y="360" width="18" height="68" rx="6" fill="#8B5A3C" />
+                <rect x="155" y="360" width="18" height="68" rx="6" fill="#C9A685" />
+
+                {/* Neck */}
+                <path
+                  d="M115 210 L80 190 L70 235 L110 250 Z"
+                  fill="#C9A685"
+                />
+
+                {/* Head */}
+                <g>
+                  {/* Ear */}
+                  <g className="cow-ear" style={{ transformOrigin: '95px 175px' }}>
+                    <ellipse cx="92" cy="172" rx="14" ry="8" fill="#A97553" transform="rotate(-30 92 172)" />
+                  </g>
+
+                  {/* Horn */}
+                  <path d="M82 160 Q76 140 88 132" stroke="#EFE7D6" strokeWidth="4" fill="none" strokeLinecap="round" />
+                  <path d="M105 155 Q112 138 122 138" stroke="#EFE7D6" strokeWidth="4" fill="none" strokeLinecap="round" />
+
+                  {/* Head shape */}
+                  <ellipse cx="95" cy="190" rx="38" ry="34" fill="#C9A685" />
+
+                  {/* Snout / muzzle */}
+                  <ellipse cx="70" cy="205" rx="22" ry="16" fill="#E8D4BE" />
+                  <ellipse cx="60" cy="200" rx="3" ry="4" fill="#4A3526" />
+                  <ellipse cx="62" cy="212" rx="3" ry="4" fill="#4A3526" />
+
+                  {/* Eye */}
+                  <g className="cow-eye">
+                    <circle cx="108" cy="185" r="4.5" fill="#1E3B2C" />
+                    <circle cx="109.5" cy="184" r="1.5" fill="#F7F2E7" />
+                  </g>
+                </g>
+              </g>
             </svg>
 
             <div
@@ -152,7 +210,7 @@ export default function HomeView({ t, lang }) {
                 border: '1px solid rgba(216,179,74,0.3)',
               }}
             >
-              <div className="num">75%</div>
+              <div className="num">40%</div>
               <div className="lbl">of prototype built so far</div>
             </div>
           </div>
@@ -174,7 +232,7 @@ export default function HomeView({ t, lang }) {
             </svg>
           </span>
           <span className="demo-text">
-            <span className="demo-title">From Leaf to Advisory</span>
+            <span className="demo-title">From Photo to Advisory</span>
             <span className="demo-sub">Watch the 2-min demo</span>
           </span>
         </button>
@@ -206,9 +264,9 @@ export default function HomeView({ t, lang }) {
             style={{ color: 'var(--soil)', opacity: 0.72 }}
           >
             <span>Weather data — Open-Meteo</span>
-            <span>Advisory grounded in ICAR &amp; KVK sources</span>
+            <span>Advisory grounded in ICAR-NIVEDI &amp; IVRI sources</span>
             <span>Confidence-aware AI — escalates when unsure</span>
-            <span>Built for Maharashtra smallholder farms</span>
+            <span>Built for Maharashtra livestock owners</span>
           </div>
         </div>
       </div>
@@ -236,7 +294,7 @@ export default function HomeView({ t, lang }) {
             >
               The prototype branches by who's holding the phone. Pick
               the one you want to walk through — each leads to a
-              different view of the same disease data.
+              different view of the same livestock health data.
             </p>
           </div>
 
@@ -244,22 +302,22 @@ export default function HomeView({ t, lang }) {
             <PortalCard
               to="/farmer"
               icon="farmer"
-              title="Farmer"
-              desc="Snap a leaf photo, get a diagnosis, a risk score, and a plain-language advisory — in the field, in seconds."
-              cta="Open farmer view"
+              title="Owner"
+              desc="Snap an animal photo, get a condition check, a risk score, and a plain-language advisory — in the field, in seconds."
+              cta="Open owner view"
             />
             <PortalCard
               to="/officer"
               icon="officer"
-              title="Officer"
-              desc="Review low-confidence cases the model escalated, confirm or correct them, and feed the outcome back into the system."
+              title="Vet Officer"
+              desc="Review cases the system escalated, confirm or correct them, and feed the outcome back into the system."
               cta="Open officer view"
             />
             <PortalCard
               to="/map"
               icon="hotspot"
               title="Hotspot Map"
-              desc="See where disease cases are clustering across the region, weighted by weather-driven risk, updated as reports come in."
+              desc="See where livestock disease cases are clustering across the region, weighted by weather-driven risk, updated as reports come in."
               cta="Open hotspot map"
             />
           </div>
@@ -290,16 +348,16 @@ export default function HomeView({ t, lang }) {
                 color: 'var(--cream)',
               }}
             >
-              From leaf to advisory in five steps
+              From photo to advisory in five steps
             </h2>
           </div>
 
           <div className="flow-steps">
-            <FlowStep n="01" title="Photo & GPS" desc="Farmer uploads a leaf photo; location is captured for local weather lookup." />
-            <FlowStep n="02" title="AI diagnosis" desc="Classifier reads the leaf and returns a disease class with a confidence score." />
+            <FlowStep n="01" title="Photo & Location" desc="Owner uploads an animal photo; location is captured for local weather lookup." />
+            <FlowStep n="02" title="AI triage" desc="Classifier reads the animal and returns a condition with a confidence score." />
             <FlowStep n="03" title="Risk scoring" desc="Live weather is matched against disease-specific risk profiles for a 0–100 score." />
-            <FlowStep n="04" title="Monitoring" desc="Each report is compared to prior ones from the same farm to detect change over time." />
-            <FlowStep n="05" title="Escalate or advise" desc="Confident, low-risk cases get a sourced advisory. Serious cases route to an officer for review." />
+            <FlowStep n="04" title="Monitoring" desc="Each report is compared to prior ones from the same holding to detect change over time." />
+            <FlowStep n="05" title="Escalate or advise" desc="Confident, low-risk cases get a sourced advisory. Serious cases route to a vet officer for review." />
           </div>
         </div>
       </section>
@@ -334,10 +392,6 @@ export default function HomeView({ t, lang }) {
   )
 }
 
-/* ============================================================
- *  PORTAL CARD
- * ============================================================ */
-
 function PortalCard({ to, icon, title, desc, cta }) {
   const navigate = useNavigate()
 
@@ -358,12 +412,7 @@ function PortalCard({ to, icon, title, desc, cta }) {
       <span className="portal-peg" />
       <div
         className="rounded-2xl flex items-center justify-center mb-5"
-        style={{
-          background: tint.bg,
-          color: tint.color,
-          width: 52,
-          height: 52,
-        }}
+        style={{ background: tint.bg, color: tint.color, width: 52, height: 52 }}
       >
         <PortalIcon name={icon} />
       </div>
@@ -417,48 +466,24 @@ function PortalIcon({ name }) {
   )
 }
 
-/* ============================================================
- *  FLOW STEP
- * ============================================================ */
-
 function FlowStep({ n, title, desc }) {
   return (
-    <div
-      className="pl-4"
-      style={{ borderLeft: '2px solid rgba(216,179,74,0.4)' }}
-    >
+    <div className="pl-4" style={{ borderLeft: '2px solid rgba(216,179,74,0.4)' }}>
       <div
         className="mb-2.5"
-        style={{
-          fontFamily: 'Fraunces, serif',
-          fontSize: 15,
-          color: 'var(--gold)',
-        }}
+        style={{ fontFamily: 'Fraunces, serif', fontSize: 15, color: 'var(--gold)' }}
       >
         {n}
       </div>
-      <h4
-        className="font-semibold mb-2"
-        style={{ fontSize: 16, color: 'var(--cream)' }}
-      >
+      <h4 className="font-semibold mb-2" style={{ fontSize: 16, color: 'var(--cream)' }}>
         {title}
       </h4>
-      <p
-        style={{
-          fontSize: 13.5,
-          color: 'rgba(247,242,231,0.65)',
-          lineHeight: 1.55,
-        }}
-      >
+      <p style={{ fontSize: 13.5, color: 'rgba(247,242,231,0.65)', lineHeight: 1.55 }}>
         {desc}
       </p>
     </div>
   )
 }
-
-/* ============================================================
- *  VIDEO FRAME RENDERER
- * ============================================================ */
 
 function VideoFrame({ url }) {
   if (!url) {
@@ -470,7 +495,7 @@ function VideoFrame({ url }) {
         </svg>
         <p>Demo video coming soon</p>
         <span>
-          The full walkthrough — leaf upload, diagnosis, officer review,
+          The full walkthrough — animal photo, AI triage, vet review,
           hotspot map — will appear here.
         </span>
       </div>
@@ -486,7 +511,7 @@ function VideoFrame({ url }) {
     return (
       <iframe
         src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
-        title="Pandora demo"
+        title="Pandora Livestock demo"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
         style={{ width: '100%', height: '100%', border: 0 }}

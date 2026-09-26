@@ -5,7 +5,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
 
 /* ============================================================
- *  PANDORA DESIGN TOKENS
+ *  PANDORA LIVESTOCK DESIGN TOKENS
  * ============================================================ */
 
 :root {
@@ -18,11 +18,10 @@
   --cream-dim:  #EFE7D6;
   --soil:       #4A3526;
   --gold:       #D8B34A;
+  --cow-brown:  #A97553;
+  --cow-brown-light: #C9A685;
+  --cow-brown-dark:  #6E4630;
 }
-
-/* ============================================================
- *  BASE
- * ============================================================ */
 
 html, body, #root {
   height: 100%;
@@ -109,22 +108,6 @@ img { max-width: 100%; }
   color: var(--tomato);
 }
 
-.btn-dark {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--green-deep);
-  color: var(--cream);
-  padding: 12px 22px;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 14px;
-  border: none;
-  cursor: pointer;
-  transition: background .15s, transform .15s;
-}
-.btn-dark:hover { background: #2c5540; transform: translateY(-1px); }
-
 /* ============================================================
  *  CARDS
  * ============================================================ */
@@ -135,13 +118,6 @@ img { max-width: 100%; }
   border-radius: 20px;
   padding: 24px;
   box-shadow: 0 1px 2px rgba(30, 59, 44, 0.04);
-}
-
-.card-soft {
-  background: var(--cream);
-  border: 1px solid var(--cream-dim);
-  border-radius: 20px;
-  padding: 24px;
 }
 
 .section-kicker {
@@ -174,34 +150,6 @@ img { max-width: 100%; }
   box-shadow: 0 0 0 3px rgba(63, 107, 74, 0.12);
 }
 
-.input-file {
-  display: block;
-  width: 100%;
-  font-size: 14px;
-  color: var(--soil);
-  background: var(--cream);
-  border: 1px dashed rgba(74, 53, 38, 0.25);
-  border-radius: 14px;
-  padding: 12px;
-  cursor: pointer;
-}
-.input-file::file-selector-button {
-  background: var(--green-mid);
-  color: var(--cream);
-  border: none;
-  border-radius: 999px;
-  padding: 8px 18px;
-  margin-right: 14px;
-  font-weight: 600;
-  font-size: 13px;
-  cursor: pointer;
-  font-family: inherit;
-  transition: background .15s;
-}
-.input-file::file-selector-button:hover {
-  background: var(--green-deep);
-}
-
 .label {
   display: block;
   font-size: 13px;
@@ -209,15 +157,6 @@ img { max-width: 100%; }
   color: rgba(74, 53, 38, 0.75);
   margin-bottom: 6px;
 }
-
-/* ============================================================
- *  RISK COLOR HELPERS
- * ============================================================ */
-
-.risk-low      { color: var(--green-mid); }
-.risk-moderate { color: #B98A2B; }
-.risk-high     { color: #C97A2B; }
-.risk-critical { color: var(--tomato); }
 
 /* ============================================================
  *  LEAFLET THEME OVERRIDES
@@ -258,19 +197,8 @@ img { max-width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * { scroll-behavior: auto !important; transition: none !important; }
+  * { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 }
-
-/* ============================================================
- *  TAILWIND UTILITY OVERRIDES (light remap)
- * ============================================================ */
-
-/* Hide the old emerald palette in favor of our tokens */
-.bg-stone-50, .bg-slate-50 { background: var(--cream) !important; }
-.bg-white { background: #fff; }
-.text-stone-800, .text-slate-800 { color: var(--soil); }
-
-
 
 /* ============================================================
  *  HOMEVIEW LAYOUT
@@ -389,7 +317,6 @@ img { max-width: 100%; }
 @media (max-width: 1000px) { .flow-steps { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 700px)  { .flow-steps { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 480px)  { .flow-steps { grid-template-columns: 1fr; } }
-
 
 /* ============================================================
  *  DEMO VIDEO CARD + MODAL
@@ -522,4 +449,59 @@ img { max-width: 100%; }
   font-size: 12.5px;
   max-width: 380px;
   line-height: 1.5;
+}
+
+/* ============================================================
+ *  ANIMATED COW ILLUSTRATION
+ * ============================================================ */
+
+.cow-group {
+  animation: cow-bob 4s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+@keyframes cow-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.cow-tail {
+  animation: cow-tail-swish 2.5s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+@keyframes cow-tail-swish {
+  0%, 100% { transform: rotate(-8deg); }
+  50%      { transform: rotate(14deg); }
+}
+
+.cow-ear {
+  animation: cow-ear-twitch 5s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+@keyframes cow-ear-twitch {
+  0%, 90%, 100% { transform: rotate(0deg); }
+  94%           { transform: rotate(6deg); }
+  98%           { transform: rotate(-4deg); }
+}
+
+.cow-grass {
+  animation: grass-sway 3.5s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+@keyframes grass-sway {
+  0%, 100% { transform: skewX(0deg); }
+  50%      { transform: skewX(3deg); }
+}
+
+.cow-eye {
+  animation: cow-blink 6s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+@keyframes cow-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%, 97%      { transform: scaleY(0.1); }
 }

@@ -837,6 +837,8 @@ def calculate_risk(
         disease
         .lower()
         .strip()
+        .replace(" ", "_")
+        .replace("-", "_")
     )
 
     profile = CONDITION_PROFILES.get(
